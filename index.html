@@ -1,146 +1,1219 @@
-<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>FAA Compliance Dashboard - Atlas Air</title><link rel="stylesheet" href="web-files/Home.en-US.customs.css">
+<head><style>/* Atlas Air Brand Colors & Design Tokens */
+:root {
+  --atlas-navy: #002554;
+  --atlas-navy-light: #003366;
+  --atlas-white: #ffffff;
+  --atlas-gold: #f5b400;
+  --atlas-gold-dark: #e6a200;
+
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --text-tertiary: #a0aec0;
+
+  --bg-body: #f7fafc;
+  --bg-card: #ffffff;
+  --bg-subtle: #edf2f7;
+
+  --border-color: #e2e8f0;
+  --border-focus: var(--atlas-gold);
+
+  --success-bg: #f0fff4;
+  --success-text: #2f855a;
+  --success-border: #9ae6b4;
+
+  --danger-bg: #fff5f5;
+  --danger-text: #c53030;
+  --danger-border: #feb2b2;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  --spacing-unit: 4px;
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 calc(var(--spacing-unit) * 8);
+}
+
+/* Layout */
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.header {
+  background-color: var(--atlas-navy);
+  color: var(--atlas-white);
+  padding: calc(var(--spacing-unit) * 4) 0;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--atlas-gold);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 8);
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 4);
+}
+
+.logo-placeholder {
+  width: 48px;
+  height: 48px;
+  background-color: var(--atlas-gold);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.logo-text {
+  font-weight: 800;
+  font-size: 0.6rem;
+  color: var(--atlas-navy);
+  text-align: center;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Interactive Navigation */
+.nav-tabs {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-unit);
+}
+
+.nav-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 2);
+  padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nav-tab:hover {
+  color: var(--atlas-white);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.nav-tab.active {
+  color: var(--atlas-navy);
+  background-color: var(--atlas-gold);
+  box-shadow: var(--shadow-md);
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.nav-tab:hover .nav-icon {
+  transform: scale(1.1);
+}
+
+/* Main Content */
+.main-content {
+  padding: calc(var(--spacing-unit) * 10) 0;
+  flex-grow: 1;
+}
+
+/* Card Styles */
+.card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-xl);
+  padding: calc(var(--spacing-unit) * 8);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+/* Section Styles */
+.kpi-section,
+.control-panel,
+.results-section {
+  margin-bottom: calc(var(--spacing-unit) * 10);
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: calc(var(--spacing-unit) * 6);
+  padding-bottom: calc(var(--spacing-unit) * 2);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+}
+
+.section-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background-color: var(--atlas-gold);
+  margin-right: calc(var(--spacing-unit) * 3);
+  border-radius: 2px;
+}
+
+/* Control Panel */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(var(--spacing-unit) * 6) calc(var(--spacing-unit) * 8);
+  margin-bottom: calc(var(--spacing-unit) * 8);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+.input-label {
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.input-container {
+  position: relative;
+}
+
+.number-input,
+.dropdown {
+  width: 100%;
+  padding: calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 4);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
+}
+
+.number-input:hover,
+.dropdown:hover {
+  border-color: #a0aec0;
+}
+
+.number-input:focus,
+.dropdown:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  background-color: var(--bg-card);
+  box-shadow: 0 0 0 3px rgba(245, 180, 0, 0.2);
+}
+
+/* Run Button */
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: calc(var(--spacing-unit) * 4);
+  padding-top: calc(var(--spacing-unit) * 6);
+  border-top: 1px solid var(--border-color);
+}
+
+.run-button {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 2);
+  background: linear-gradient(135deg, var(--atlas-navy), var(--atlas-navy-light));
+  color: var(--atlas-white);
+  border: none;
+  padding: calc(var(--spacing-unit) * 3) calc(var(--spacing-unit) * 6);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.run-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* KPI Section */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(var(--spacing-unit) * 6);
+}
+
+.kpi-card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: calc(var(--spacing-unit) * 5);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 3);
+  transition: all 0.3s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--atlas-gold);
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 3);
+}
+
+.kpi-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-subtle);
+  border-radius: var(--radius-md);
+}
+
+.kpi-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.kpi-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.kpi-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.kpi-subtitle {
+  color: var(--text-tertiary);
+}
+
+.kpi-trend {
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.kpi-trend.up {
+  color: #2f855a;
+  background-color: #f0fff4;
+}
+.kpi-trend.down {
+  color: #c53030;
+  background-color: #fff5f5;
+}
+
+.kpi-progress-bar {
+  width: 60px;
+  height: 4px;
+  background-color: var(--bg-subtle);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.kpi-progress {
+  height: 100%;
+  background-color: var(--atlas-gold);
+  border-radius: 2px;
+}
+
+/* Icons */
+.icon-home,
+.icon-audit,
+.icon-employees,
+.icon-users,
+.icon-target,
+.icon-flask,
+.icon-chart,
+.icon-clipboard,
+.icon-run,
+.icon-save,
+.icon-download,
+.icon-clear,
+.icon-expand,
+.icon-collapse {
+  width: 24px;
+  height: 24px;
+  background-color: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+.nav-tab:not(.active) .nav-icon {
+  color: var(--atlas-white);
+}
+.nav-tab.active .nav-icon {
+  color: var(--atlas-navy);
+}
+.kpi-icon-wrapper .icon-users,
+.kpi-icon-wrapper .icon-target,
+.kpi-icon-wrapper .icon-flask,
+.kpi-icon-wrapper .icon-chart {
+  color: var(--atlas-navy);
+}
+.run-button .icon-run {
+  color: var(--atlas-white);
+}
+.action-button .icon-save {
+  color: var(--success-text);
+}
+.action-button .icon-download {
+  color: var(--atlas-navy);
+}
+.action-button .icon-clear {
+  color: var(--danger-text);
+}
+.expand-button .icon-expand,
+.expand-button .icon-collapse {
+  color: var(--atlas-navy);
+}
+.placeholder-icon .icon-clipboard {
+  color: var(--text-tertiary);
+  width: 48px;
+  height: 48px;
+}
+
+.icon-home {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'%3E%3C/path%3E%3Cpolyline points='9 22 9 12 15 12 15 22'%3E%3C/polyline%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'%3E%3C/path%3E%3Cpolyline points='9 22 9 12 15 12 15 22'%3E%3C/polyline%3E%3C/svg%3E");
+}
+.icon-audit {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'%3E%3C/path%3E%3Cpolyline points='14 2 14 8 20 8'%3E%3C/polyline%3E%3Cline x1='16' y1='13' x2='8' y2='13'%3E%3C/line%3E%3Cline x1='16' y1='17' x2='8' y2='17'%3E%3C/line%3E%3Cpolyline points='10 9 9 9 8 9'%3E%3C/polyline%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'%3E%3C/path%3E%3Cpolyline points='14 2 14 8 20 8'%3E%3C/polyline%3E%3Cline x1='16' y1='13' x2='8' y2='13'%3E%3C/line%3E%3Cline x1='16' y1='17' x2='8' y2='17'%3E%3C/line%3E%3Cpolyline points='10 9 9 9 8 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+.icon-employees {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='9' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'%3E%3C/path%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'%3E%3C/path%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='9' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'%3E%3C/path%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'%3E%3C/path%3E%3C/svg%3E");
+}
+.icon-users {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='9' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'%3E%3C/path%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'%3E%3C/path%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='9' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'%3E%3C/path%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'%3E%3C/path%3E%3C/svg%3E");
+}
+.icon-target {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='6'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='2'%3E%3C/circle%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='6'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='2'%3E%3C/circle%3E%3C/svg%3E");
+}
+.icon-flask {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 3h6M10 9h4'%3E%3C/path%3E%3Cpath d='M10 3v6l-4 11a.7.7 0 0 0 .7 1h10.6a.7.7 0 0 0 .7-1L14 9V3'%3E%3C/path%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 3h6M10 9h4'%3E%3C/path%3E%3Cpath d='M10 3v6l-4 11a.7.7 0 0 0 .7 1h10.6a.7.7 0 0 0 .7-1L14 9V3'%3E%3C/path%3E%3C/svg%3E");
+}
+.icon-chart {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18'%3E%3C/path%3E%3Cpath d='m19 9-5 5-4-4-3 3'%3E%3C/path%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18'%3E%3C/path%3E%3Cpath d='m19 9-5 5-4-4-3 3'%3E%3C/path%3E%3C/svg%3E");
+}
+.icon-clipboard {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'%3E%3C/path%3E%3Crect x='8' y='2' width='8' height='4' rx='1' ry='1'%3E%3C/rect%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'%3E%3C/path%3E%3Crect x='8' y='2' width='8' height='4' rx='1' ry='1'%3E%3C/rect%3E%3C/svg%3E");
+}
+.icon-run {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='13 17 18 12 13 7'%3E%3C/polyline%3E%3Cpolyline points='6 17 11 12 6 7'%3E%3C/polyline%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='13 17 18 12 13 7'%3E%3C/polyline%3E%3Cpolyline points='6 17 11 12 6 7'%3E%3C/polyline%3E%3C/svg%3E");
+}
+.icon-save {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z'%3E%3C/path%3E%3Cpolyline points='17 21 17 13 7 13 7 21'%3E%3C/polyline%3E%3Cpolyline points='7 3 7 8 15 8'%3E%3C/polyline%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z'%3E%3C/path%3E%3Cpolyline points='17 21 17 13 7 13 7 21'%3E%3C/polyline%3E%3Cpolyline points='7 3 7 8 15 8'%3E%3C/polyline%3E%3C/svg%3E");
+}
+.icon-download {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'%3E%3C/path%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3Cline x1='12' y1='15' x2='12' y2='3'%3E%3C/line%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'%3E%3C/path%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3Cline x1='12' y1='15' x2='12' y2='3'%3E%3C/line%3E%3C/svg%3E");
+}
+.icon-clear {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z'%3E%3C/path%3E%3Cline x1='18' y1='9' x2='12' y2='15'%3E%3C/line%3E%3Cline x1='12' y1='9' x2='18' y2='15'%3E%3C/line%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z'%3E%3C/path%3E%3Cline x1='18' y1='9' x2='12' y2='15'%3E%3C/line%3E%3Cline x1='12' y1='9' x2='18' y2='15'%3E%3C/line%3E%3C/svg%3E");
+}
+.icon-expand {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cpolyline points='9 21 3 21 3 15'%3E%3C/polyline%3E%3Cline x1='21' y1='3' x2='14' y2='10'%3E%3C/line%3E%3Cline x1='3' y1='21' x2='10' y2='14'%3E%3C/line%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cpolyline points='9 21 3 21 3 15'%3E%3C/polyline%3E%3Cline x1='21' y1='3' x2='14' y2='10'%3E%3C/line%3E%3Cline x1='3' y1='21' x2='10' y2='14'%3E%3C/line%3E%3C/svg%3E");
+}
+.icon-collapse {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='4 14 10 14 10 20'%3E%3C/polyline%3E%3Cpolyline points='20 10 14 10 14 4'%3E%3C/polyline%3E%3Cline x1='14' y1='10' x2='21' y2='3'%3E%3C/line%3E%3Cline x1='3' y1='21' x2='10' y2='14'%3E%3C/line%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='4 14 10 14 10 20'%3E%3C/polyline%3E%3Cpolyline points='20 10 14 10 14 4'%3E%3C/polyline%3E%3Cline x1='14' y1='10' x2='21' y2='3'%3E%3C/line%3E%3Cline x1='3' y1='21' x2='10' y2='14'%3E%3C/line%3E%3C/svg%3E");
+}
+
+/* Results Section */
+.results-content {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.placeholder-content {
+  text-align: center;
+  color: var(--text-tertiary);
+  padding: calc(var(--spacing-unit) * 10);
+}
+.placeholder-icon {
+  margin-bottom: calc(var(--spacing-unit) * 4);
+}
+.placeholder-title {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-unit);
+}
+.placeholder-text {
+  font-size: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Employee Table Styles */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(var(--spacing-unit) * 5);
+  margin-bottom: calc(var(--spacing-unit) * 6);
+}
+
+.summary-card {
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: calc(var(--spacing-unit) * 4);
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.summary-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.summary-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.employee-table-container {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.employee-table-wrapper {
+  max-height: 450px;
+  overflow-y: auto;
+  transition: max-height 0.4s ease-in-out;
+}
+
+.employee-table-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+.employee-table-wrapper::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+}
+.employee-table-wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+.employee-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.employee-table th {
+  background-color: var(--bg-subtle);
+  color: var(--text-secondary);
+  padding: calc(var(--spacing-unit) * 4);
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+.employee-table td {
+  padding: calc(var(--spacing-unit) * 4);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+.employee-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.employee-table tbody tr:hover {
+  background-color: var(--bg-subtle);
+}
+.employee-id {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.test-type-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.test-type-combo {
+  background-color: #ebf4ff;
+  color: #3b82f6;
+}
+.test-type-drug {
+  background-color: #f5f3ff;
+  color: #8b5cf6;
+}
+
+/* Action Buttons */
+.results-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: calc(var(--spacing-unit) * 4);
+  margin-top: calc(var(--spacing-unit) * 6);
+  padding-top: calc(var(--spacing-unit) * 6);
+  border-top: 1px solid var(--border-color);
+}
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 2);
+  padding: calc(var(--spacing-unit) * 2.5) calc(var(--spacing-unit) * 4);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  background-color: var(--bg-subtle) !important;
+}
+.action-button.save {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+  border-color: var(--success-border);
+}
+.action-button.save:hover:not(:disabled) {
+  background-color: #e6fffa;
+  border-color: #4fd1c5;
+}
+.action-button.download {
+  background-color: var(--bg-subtle);
+  color: var(--text-secondary);
+}
+.action-button.download:hover:not(:disabled) {
+  background-color: #e2e8f0;
+}
+.action-button.clear {
+  background-color: var(--danger-bg);
+  color: var(--danger-text);
+  border-color: var(--danger-border);
+}
+.action-button.clear:hover:not(:disabled) {
+  background-color: #fed7d7;
+  border-color: #fc8181;
+}
+
+/* Loading & Placeholders */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: calc(var(--spacing-unit) * 4);
+}
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--bg-subtle);
+  border-top-color: var(--atlas-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.loading-text {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+}
+.hidden {
+  display: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 992px) {
+  .header-content {
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 4);
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .container {
+    padding: 0 calc(var(--spacing-unit) * 4);
+  }
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .results-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .action-button {
+    justify-content: center;
+  }
+}
+</style></head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>FAA Compliance Dashboard - Atlas Air</title>
 <div class="dashboard-layout" style="display: flex; flex-direction: column; min-height: 100vh;">
-  <!-- Header -->
-  <header class="header" style="background-color: var(--atlas-navy); color: var(--atlas-white); box-shadow: var(--shadow-md); position: sticky; top: 0px; z-index: 100;">
-    <div class="container" style="max-width: 1400px; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto;">
-      <div class="header-content" style="display: flex; justify-content: space-between; align-items: center;">
-        <div class="logo-section" style="display: flex; align-items: center;">
-          <div class="logo-placeholder" style="width: 120px; height: 48px; background-color: var(--atlas-gold); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
-            <span class="logo-text" style="font-weight: 800; font-size: 0.6rem; color: var(--atlas-navy); text-align: center; line-height: 1.1; letter-spacing: 0.5px;"><br /></span><img src="/logoatlas-airreverse-2-color.png" alt="logo_atlas-air_reverse-2-color" name="logo_atlas-air_reverse-2-color.png" style="width: 139%; height: 35px; max-width: 100%;" />
-          </div>
-          <h1 class="dashboard-title" style="font-size: 1.5rem; font-weight: 600; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; white-space-collapse: collapse; text-wrap-mode: nowrap; color: var(--portalThemeColor7);">Drug and Alcohol Testing Portal</h1>
-        </div>
-        <!-- Interactive Navigation -->
-        <nav class="nav-container">
-          <div class="nav-tabs" style="display: flex; background-color: rgba(255, 255, 255, 0.1);">
-            <button data-page="Home" onclick="location.href='/'" class="nav-tab active" style="position: relative; display: flex; align-items: center; background-image: none; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; font-size: 0.9rem; font-weight: 500; color: var(--atlas-navy); background-color: var(--atlas-white); box-shadow: var(--shadow-md);">
-              <div class="nav-icon icon-home" style="display: flex; align-items: center; justify-content: center; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: transform; width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'%3E%3C/path%3E%3Cpolyline points='9 22 9 12 15 12 15 22'%3E%3C/polyline%3E%3C/svg%3E'); color: var(--atlas-navy);"></div>
-              <span class="nav-label">Home</span></button
-            ><button data-page="Audit-Logs" onclick="location.href='/Audit-Logs'" class="nav-tab" style="position: relative; display: flex; align-items: center; background-image: none; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; color: rgba(255, 255, 255, 0.8); cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; font-size: 0.9rem; font-weight: 500;">
-              <div class="nav-icon icon-audit" style="display: flex; align-items: center; justify-content: center; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: transform; width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'%3E%3C/path%3E%3Cpolyline points='14 2 14 8 20 8'%3E%3C/polyline%3E%3Cline x1='16' y1='13' x2='8' y2='13'%3E%3C/line%3E%3Cline x1='16' y1='17' x2='8' y2='17'%3E%3C/line%3E%3Cpolyline points='10 9 9 9 8 9'%3E%3C/polyline%3E%3C/svg%3E'); color: var(--atlas-white);"></div>
-              <span class="nav-label">Audit Log</span></button
-            ><button data-page="Employee-Management-Page" onclick="location.href='/Employee-Management-Page'" class="nav-tab" style="position: relative; display: flex; align-items: center; background-image: none; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; color: rgba(255, 255, 255, 0.8); cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; font-size: 0.9rem; font-weight: 500;">
-              <div class="nav-icon icon-employees" style="display: flex; align-items: center; justify-content: center; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: transform; width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='9' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'%3E%3C/path%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'%3E%3C/path%3E%3C/svg%3E'); color: var(--atlas-white);"></div>
-              <span class="nav-label">Employee Management</span>
-            </button>
-          </div>
-        </nav>
-      </div>
-    </div>
-  </header>
-  <!-- Main Content -->
-  <main class="main-content" style="flex-grow: 1;">
-    <div class="container" style="max-width: 1400px; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto;">
-      <!-- KPI Section -->
-      <section class="kpi-section" style="margin-bottom: calc(var(--spacing-unit) * 10);">
-        <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: calc(var(--spacing-unit) * 6); padding-bottom: calc(var(--spacing-unit) * 2); display: flex; align-items: center;">Key Performance Indicators</h2>
-        <div class="kpi-grid" style="display: grid; grid-template-columns: repeat(4, 1fr);">
-          <div class="kpi-card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md); display: flex; flex-direction: column; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
-            <div class="kpi-header" style="display: flex; align-items: center;">
-              <div class="kpi-icon-wrapper" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-subtle);"><div class="icon-users" style="width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='9' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'%3E%3C/path%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'%3E%3C/path%3E%3C/svg%3E'); color: var(--atlas-navy);"></div></div>
-              <h3 class="kpi-title" style="font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);">Total Active Employees</h3>
-            </div>
-            <p data-target="1247" class="kpi-value" style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">0</p>
-            <div class="kpi-footer" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;"><span class="kpi-subtitle" style="color: var(--text-tertiary);">Current workforce</span><span class="kpi-trend up" style="font-weight: 600; padding-top: 2px; padding-right: 6px; padding-bottom: 2px; padding-left: 6px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; color: rgb(47, 133, 90); background-color: rgb(240, 255, 244);">+1.2%</span></div>
-          </div>
-          <div class="kpi-card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md); display: flex; flex-direction: column; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
-            <div class="kpi-header" style="display: flex; align-items: center;">
-              <div class="kpi-icon-wrapper" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-subtle);"><div class="icon-target" style="width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='6'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='2'%3E%3C/circle%3E%3C/svg%3E'); color: var(--atlas-navy);"></div></div>
-              <h3 class="kpi-title" style="font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);">Annual Drug Goal</h3>
-            </div>
-            <p data-target="624" class="kpi-value" style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">0</p>
-            <div class="kpi-footer" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
-              <span class="kpi-subtitle" style="color: var(--text-tertiary);">50% of workforce</span>
-              <div class="kpi-progress-bar" style="width: 60px; height: 4px; background-color: var(--bg-subtle); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; overflow-x: hidden; overflow-y: hidden;"><div class="kpi-progress" style="height: 100%; background-color: var(--atlas-gold); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; width: 50%;"></div></div>
-            </div>
-          </div>
-          <div class="kpi-card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md); display: flex; flex-direction: column; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
-            <div class="kpi-header" style="display: flex; align-items: center;">
-              <div class="kpi-icon-wrapper" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-subtle);"><div class="icon-flask" style="width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 3h6M10 9h4'%3E%3C/path%3E%3Cpath d='M10 3v6l-4 11a.7.7 0 0 0 .7 1h10.6a.7.7 0 0 0 .7-1L14 9V3'%3E%3C/path%3E%3C/svg%3E'); color: var(--atlas-navy);"></div></div>
-              <h3 class="kpi-title" style="font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);">Annual Alcohol Goal</h3>
-            </div>
-            <p data-target="125" class="kpi-value" style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">0</p>
-            <div class="kpi-footer" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
-              <span class="kpi-subtitle" style="color: var(--text-tertiary);">10% of workforce</span>
-              <div class="kpi-progress-bar" style="width: 60px; height: 4px; background-color: var(--bg-subtle); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; overflow-x: hidden; overflow-y: hidden;"><div class="kpi-progress" style="height: 100%; background-color: var(--atlas-gold); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; width: 10%;"></div></div>
-            </div>
-          </div>
-          <div class="kpi-card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md); display: flex; flex-direction: column; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
-            <div class="kpi-header" style="display: flex; align-items: center;">
-              <div class="kpi-icon-wrapper" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-subtle);"><div class="icon-chart" style="width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18'%3E%3C/path%3E%3Cpath d='m19 9-5 5-4-4-3 3'%3E%3C/path%3E%3C/svg%3E'); color: var(--atlas-navy);"></div></div>
-              <h3 class="kpi-title" style="font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);">Completion Rate</h3>
-            </div>
-            <p data-target="87.3" class="kpi-value" style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">0.0</p>
-            <div class="kpi-footer" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;"><span class="kpi-subtitle" style="color: var(--text-tertiary);">YTD Progress</span><span class="kpi-trend down" style="font-weight: 600; padding-top: 2px; padding-right: 6px; padding-bottom: 2px; padding-left: 6px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; color: rgb(197, 48, 48); background-color: rgb(255, 245, 245);">-0.5%</span></div>
-          </div>
-        </div>
-      </section>
-      <!-- Control Panel -->
-      <section class="control-panel" style="margin-bottom: calc(var(--spacing-unit) * 10);">
-        <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: calc(var(--spacing-unit) * 6); padding-bottom: calc(var(--spacing-unit) * 2); display: flex; align-items: center;">Randomizer Configuration</h2>
-        <div class="card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md);">
-          <div class="form-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); margin-bottom: calc(var(--spacing-unit) * 8);">
-            <!-- Test Percentage Inputs -->
-            <div class="input-group" style="display: flex; flex-direction: column;">
-              <label for="combo-test-number" class="input-label" style="font-weight: 500; color: var(--text-secondary); font-size: 0.9rem;">Drug &amp; Alcohol (Combo) Test %</label>
-              <div class="input-container" style="position: relative;"><input type="number" id="combo-test-number" min="0" max="100" value="25" class="number-input" style="width: 100%; font-size: 1rem; transition-behavior: normal; transition-duration: 0.2s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; background-color: var(--bg-subtle); color: var(--text-primary);" /></div>
-            </div>
-            <div class="input-group" style="display: flex; flex-direction: column;">
-              <label for="drug-test-number" class="input-label" style="font-weight: 500; color: var(--text-secondary); font-size: 0.9rem;">Drug Test %</label>
-              <div class="input-container" style="position: relative;"><input type="number" id="drug-test-number" min="0" max="100" value="50" class="number-input" style="width: 100%; font-size: 1rem; transition-behavior: normal; transition-duration: 0.2s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; background-color: var(--bg-subtle); color: var(--text-primary);" /></div>
-            </div>
-            <!-- Dropdown Selectors -->
-            <div class="input-group" style="display: flex; flex-direction: column;">
-              <label for="quarter" class="input-label" style="font-weight: 500; color: var(--text-secondary); font-size: 0.9rem;">Quarter</label
-              ><select id="quarter" class="dropdown" style="width: 100%; font-size: 1rem; transition-behavior: normal; transition-duration: 0.2s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; background-color: var(--bg-subtle); color: var(--text-primary);">
-                <option value="Q1">Q1 - January to March</option>
-                <option value="Q2">Q2 - April to June</option>
-                <option value="Q3">Q3 - July to September</option>
-                <option value="Q4" selected="">Q4 - October to December</option>
-              </select>
-            </div>
-            <div class="input-group" style="display: flex; flex-direction: column;">
-              <label for="year" class="input-label" style="font-weight: 500; color: var(--text-secondary); font-size: 0.9rem;">Year</label
-              ><select id="year" class="dropdown" style="width: 100%; font-size: 1rem; transition-behavior: normal; transition-duration: 0.2s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; background-color: var(--bg-subtle); color: var(--text-primary);">
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024" selected="">2024</option>
-                <option value="2025">2025</option>
-              </select>
-            </div>
-          </div>
-          <!-- Run Button -->
-          <div class="button-container" style="display: flex; justify-content: flex-end; margin-top: calc(var(--spacing-unit) * 4); padding-top: calc(var(--spacing-unit) * 6);">
-            <button id="run-randomizer" class="run-button" style="display: inline-flex; align-items: center; color: var(--atlas-white); border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; font-size: 1rem; font-weight: 600; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; box-shadow: var(--shadow-md);">
-              <div class="icon-run" style="width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='13 17 18 12 13 7'%3E%3C/polyline%3E%3Cpolyline points='6 17 11 12 6 7'%3E%3C/polyline%3E%3C/svg%3E'); color: var(--atlas-white);"></div>
+<!-- Header -->
+<header class="header" style="background-color: var(--atlas-navy); color: var(--atlas-white); box-shadow: var(--shadow-md); position: sticky; top: 0px; z-index: 100;">
+<div class="container" style="max-width: 1400px; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto;">
+<div class="header-content" style="display: flex; justify-content: space-between; align-items: center;">
+<div class="logo-section" style="display: flex; align-items: center;">
+<div class="logo-placeholder" style="width: 120px; height: 48px; background-color: var(--atlas-gold); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
+<span class="logo-text" style="font-weight: 800; font-size: 0.6rem; color: var(--atlas-navy); text-align: center; line-height: 1.1; letter-spacing: 0.5px;"><br/></span><img alt="logo_atlas-air_reverse-2-color" name="logo_atlas-air_reverse-2-color.png" src="/logoatlas-airreverse-2-color.png" style="width: 139%; height: 35px; max-width: 100%;"/>
+</div>
+<h1 class="dashboard-title" style="font-size: 1.5rem; font-weight: 600; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; white-space-collapse: collapse; text-wrap-mode: nowrap; color: var(--portalThemeColor7);">Drug and Alcohol Testing Portal</h1>
+</div>
+<!-- Interactive Navigation -->
+<nav class="nav-container">
+<div class="nav-tabs" style="display: flex; background-color: rgba(255, 255, 255, 0.1);">
+<button class="nav-tab active" data-page="Home" onclick="location.href='/'" style="position: relative; display: flex; align-items: center; background-image: none; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; font-size: 0.9rem; font-weight: 500; color: var(--atlas-navy); background-color: var(--atlas-white); box-shadow: var(--shadow-md);">
+<div class="nav-icon icon-home" style="display: flex; align-items: center; justify-content: center; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: transform; width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'%3E%3C/path%3E%3Cpolyline points='9 22 9 12 15 12 15 22'%3E%3C/polyline%3E%3C/svg%3E'); color: var(--atlas-navy);"></div>
+<span class="nav-label">Home</span></button><button class="nav-tab" data-page="Audit-Logs" onclick="location.href='/Audit-Logs'" style="position: relative; display: flex; align-items: center; background-image: none; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; color: rgba(255, 255, 255, 0.8); cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; font-size: 0.9rem; font-weight: 500;">
+<div class="nav-icon icon-audit" style="display: flex; align-items: center; justify-content: center; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: transform; width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'%3E%3C/path%3E%3Cpolyline points='14 2 14 8 20 8'%3E%3C/polyline%3E%3Cline x1='16' y1='13' x2='8' y2='13'%3E%3C/line%3E%3Cline x1='16' y1='17' x2='8' y2='17'%3E%3C/line%3E%3Cpolyline points='10 9 9 9 8 9'%3E%3C/polyline%3E%3C/svg%3E'); color: var(--atlas-white);"></div>
+<span class="nav-label">Audit Log</span></button><button class="nav-tab" data-page="Employee-Management-Page" onclick="location.href='/Employee-Management-Page'" style="position: relative; display: flex; align-items: center; background-image: none; background-position-x: initial; background-position-y: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: initial; border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; color: rgba(255, 255, 255, 0.8); cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; font-size: 0.9rem; font-weight: 500;">
+<div class="nav-icon icon-employees" style="display: flex; align-items: center; justify-content: center; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: transform; width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='9' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'%3E%3C/path%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'%3E%3C/path%3E%3C/svg%3E'); color: var(--atlas-white);"></div>
+<span class="nav-label">Employee Management</span>
+</button>
+</div>
+</nav>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="main-content" style="flex-grow: 1;">
+<div class="container" style="max-width: 1400px; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto;">
+<!-- KPI Section -->
+<section class="kpi-section" style="margin-bottom: calc(var(--spacing-unit) * 10);">
+<h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: calc(var(--spacing-unit) * 6); padding-bottom: calc(var(--spacing-unit) * 2); display: flex; align-items: center;">Key Performance Indicators</h2>
+<div class="kpi-grid" style="display: grid; grid-template-columns: repeat(4, 1fr);">
+<div class="kpi-card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md); display: flex; flex-direction: column; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
+<div class="kpi-header" style="display: flex; align-items: center;">
+<div class="kpi-icon-wrapper" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-subtle);"><div class="icon-users" style="width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='9' cy='7' r='4'%3E%3C/circle%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'%3E%3C/path%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'%3E%3C/path%3E%3C/svg%3E'); color: var(--atlas-navy);"></div></div>
+<h3 class="kpi-title" style="font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);">Total Active Employees</h3>
+</div>
+<p class="kpi-value" data-target="1247" style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">0</p>
+<div class="kpi-footer" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;"><span class="kpi-subtitle" style="color: var(--text-tertiary);">Current workforce</span><span class="kpi-trend up" style="font-weight: 600; padding-top: 2px; padding-right: 6px; padding-bottom: 2px; padding-left: 6px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; color: rgb(47, 133, 90); background-color: rgb(240, 255, 244);">+1.2%</span></div>
+</div>
+<div class="kpi-card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md); display: flex; flex-direction: column; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
+<div class="kpi-header" style="display: flex; align-items: center;">
+<div class="kpi-icon-wrapper" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-subtle);"><div class="icon-target" style="width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='6'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='2'%3E%3C/circle%3E%3C/svg%3E'); color: var(--atlas-navy);"></div></div>
+<h3 class="kpi-title" style="font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);">Annual Drug Goal</h3>
+</div>
+<p class="kpi-value" data-target="624" style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">0</p>
+<div class="kpi-footer" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+<span class="kpi-subtitle" style="color: var(--text-tertiary);">50% of workforce</span>
+<div class="kpi-progress-bar" style="width: 60px; height: 4px; background-color: var(--bg-subtle); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; overflow-x: hidden; overflow-y: hidden;"><div class="kpi-progress" style="height: 100%; background-color: var(--atlas-gold); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; width: 50%;"></div></div>
+</div>
+</div>
+<div class="kpi-card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md); display: flex; flex-direction: column; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
+<div class="kpi-header" style="display: flex; align-items: center;">
+<div class="kpi-icon-wrapper" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-subtle);"><div class="icon-flask" style="width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 3h6M10 9h4'%3E%3C/path%3E%3Cpath d='M10 3v6l-4 11a.7.7 0 0 0 .7 1h10.6a.7.7 0 0 0 .7-1L14 9V3'%3E%3C/path%3E%3C/svg%3E'); color: var(--atlas-navy);"></div></div>
+<h3 class="kpi-title" style="font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);">Annual Alcohol Goal</h3>
+</div>
+<p class="kpi-value" data-target="125" style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">0</p>
+<div class="kpi-footer" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+<span class="kpi-subtitle" style="color: var(--text-tertiary);">10% of workforce</span>
+<div class="kpi-progress-bar" style="width: 60px; height: 4px; background-color: var(--bg-subtle); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; overflow-x: hidden; overflow-y: hidden;"><div class="kpi-progress" style="height: 100%; background-color: var(--atlas-gold); border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; width: 10%;"></div></div>
+</div>
+</div>
+<div class="kpi-card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md); display: flex; flex-direction: column; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all;">
+<div class="kpi-header" style="display: flex; align-items: center;">
+<div class="kpi-icon-wrapper" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-subtle);"><div class="icon-chart" style="width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18'%3E%3C/path%3E%3Cpath d='m19 9-5 5-4-4-3 3'%3E%3C/path%3E%3C/svg%3E'); color: var(--atlas-navy);"></div></div>
+<h3 class="kpi-title" style="font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);">Completion Rate</h3>
+</div>
+<p class="kpi-value" data-target="87.3" style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); line-height: 1;">0.0</p>
+<div class="kpi-footer" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;"><span class="kpi-subtitle" style="color: var(--text-tertiary);">YTD Progress</span><span class="kpi-trend down" style="font-weight: 600; padding-top: 2px; padding-right: 6px; padding-bottom: 2px; padding-left: 6px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; color: rgb(197, 48, 48); background-color: rgb(255, 245, 245);">-0.5%</span></div>
+</div>
+</div>
+</section>
+<!-- Control Panel -->
+<section class="control-panel" style="margin-bottom: calc(var(--spacing-unit) * 10);">
+<h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: calc(var(--spacing-unit) * 6); padding-bottom: calc(var(--spacing-unit) * 2); display: flex; align-items: center;">Randomizer Configuration</h2>
+<div class="card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md);">
+<div class="form-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); margin-bottom: calc(var(--spacing-unit) * 8);">
+<!-- Test Percentage Inputs -->
+<div class="input-group" style="display: flex; flex-direction: column;">
+<label class="input-label" for="combo-test-number" style="font-weight: 500; color: var(--text-secondary); font-size: 0.9rem;">Drug &amp; Alcohol (Combo) Test %</label>
+<div class="input-container" style="position: relative;"><input class="number-input" id="combo-test-number" max="100" min="0" style="width: 100%; font-size: 1rem; transition-behavior: normal; transition-duration: 0.2s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; background-color: var(--bg-subtle); color: var(--text-primary);" type="number" value="25"/></div>
+</div>
+<div class="input-group" style="display: flex; flex-direction: column;">
+<label class="input-label" for="drug-test-number" style="font-weight: 500; color: var(--text-secondary); font-size: 0.9rem;">Drug Test %</label>
+<div class="input-container" style="position: relative;"><input class="number-input" id="drug-test-number" max="100" min="0" style="width: 100%; font-size: 1rem; transition-behavior: normal; transition-duration: 0.2s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; background-color: var(--bg-subtle); color: var(--text-primary);" type="number" value="50"/></div>
+</div>
+<!-- Dropdown Selectors -->
+<div class="input-group" style="display: flex; flex-direction: column;">
+<label class="input-label" for="quarter" style="font-weight: 500; color: var(--text-secondary); font-size: 0.9rem;">Quarter</label><select class="dropdown" id="quarter" style="width: 100%; font-size: 1rem; transition-behavior: normal; transition-duration: 0.2s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; background-color: var(--bg-subtle); color: var(--text-primary);">
+<option value="Q1">Q1 - January to March</option>
+<option value="Q2">Q2 - April to June</option>
+<option value="Q3">Q3 - July to September</option>
+<option selected="" value="Q4">Q4 - October to December</option>
+</select>
+</div>
+<div class="input-group" style="display: flex; flex-direction: column;">
+<label class="input-label" for="year" style="font-weight: 500; color: var(--text-secondary); font-size: 0.9rem;">Year</label><select class="dropdown" id="year" style="width: 100%; font-size: 1rem; transition-behavior: normal; transition-duration: 0.2s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; background-color: var(--bg-subtle); color: var(--text-primary);">
+<option value="2022">2022</option>
+<option value="2023">2023</option>
+<option selected="" value="2024">2024</option>
+<option value="2025">2025</option>
+</select>
+</div>
+</div>
+<!-- Run Button -->
+<div class="button-container" style="display: flex; justify-content: flex-end; margin-top: calc(var(--spacing-unit) * 4); padding-top: calc(var(--spacing-unit) * 6);">
+<button class="run-button" id="run-randomizer" style="display: inline-flex; align-items: center; color: var(--atlas-white); border-top-width: initial; border-right-width: initial; border-bottom-width: initial; border-left-width: initial; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-top-color: initial; border-right-color: initial; border-bottom-color: initial; border-left-color: initial; border-image-source: initial; border-image-slice: initial; border-image-width: initial; border-image-outset: initial; border-image-repeat: initial; font-size: 1rem; font-weight: 600; cursor: pointer; transition-behavior: normal; transition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0s; transition-property: all; box-shadow: var(--shadow-md);">
+<div class="icon-run" style="width: 24px; height: 24px; background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='13 17 18 12 13 7'%3E%3C/polyline%3E%3Cpolyline points='6 17 11 12 6 7'%3E%3C/polyline%3E%3C/svg%3E'); color: var(--atlas-white);"></div>
               Generate Random Selection
             </button>
-          </div>
-        </div>
-      </section>
-      <!-- Results Section -->
-      <section class="results-section" style="margin-bottom: calc(var(--spacing-unit) * 10);">
-        <div id="results-content" class="results-content" style="min-height: 300px; display: flex; flex-direction: column; align-items: stretch; justify-content: center;">
-          <!-- This content will be dynamically generated by JavaScript -->
-          <h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: calc(var(--spacing-unit) * 6); padding-bottom: calc(var(--spacing-unit) * 2); display: flex; align-items: center;">Random Selection Results</h2>
-          <div class="card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md);">
-            <div class="placeholder-content" style="text-align: center; color: var(--text-tertiary);">
-              <div class="placeholder-icon" style="margin-bottom: calc(var(--spacing-unit) * 4);"><div class="icon-clipboard" style="background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'%3E%3C/path%3E%3Crect x='8' y='2' width='8' height='4' rx='1' ry='1'%3E%3C/rect%3E%3C/svg%3E'); color: var(--text-tertiary); width: 48px; height: 48px;"></div></div>
-              <h3 class="placeholder-title" style="font-size: 1.25rem; color: var(--text-secondary); margin-bottom: var(--spacing-unit);">Awaiting Configuration</h3>
-              <p class="placeholder-text" style="font-size: 1rem; max-width: 400px; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto;">Configure and run the randomizer to generate employee selection results.</p>
+</div>
+</div>
+</section>
+<!-- Results Section -->
+<section class="results-section" style="margin-bottom: calc(var(--spacing-unit) * 10);">
+<div class="results-content" id="results-content" style="min-height: 300px; display: flex; flex-direction: column; align-items: stretch; justify-content: center;">
+<!-- This content will be dynamically generated by JavaScript -->
+<h2 class="section-title" style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: calc(var(--spacing-unit) * 6); padding-bottom: calc(var(--spacing-unit) * 2); display: flex; align-items: center;">Random Selection Results</h2>
+<div class="card" style="background-color: var(--bg-card); box-shadow: var(--shadow-md);">
+<div class="placeholder-content" style="text-align: center; color: var(--text-tertiary);">
+<div class="placeholder-icon" style="margin-bottom: calc(var(--spacing-unit) * 4);"><div class="icon-clipboard" style="background-color: currentcolor; mask-size: contain; mask-repeat: no-repeat; -webkit-mask-position-x: center; -webkit-mask-position-y: center; mask-image: url('data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'%3E%3C/path%3E%3Crect x='8' y='2' width='8' height='4' rx='1' ry='1'%3E%3C/rect%3E%3C/svg%3E'); color: var(--text-tertiary); width: 48px; height: 48px;"></div></div>
+<h3 class="placeholder-title" style="font-size: 1.25rem; color: var(--text-secondary); margin-bottom: var(--spacing-unit);">Awaiting Configuration</h3>
+<p class="placeholder-text" style="font-size: 1rem; max-width: 400px; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto;">Configure and run the randomizer to generate employee selection results.</p>
+</div>
+</div>
+</div>
+<!-- Loading Spinner (Hidden by default) -->
+<div class="loading-spinner hidden" id="loading-spinner" style="flex-direction: column; align-items: center; justify-content: center; min-height: 300px; display: none;">
+<div class="spinner" style="width: 48px; height: 48px; border-top-color: var(--atlas-gold); border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; animation-duration: 1s; animation-timing-function: linear; animation-delay: 0s; animation-iteration-count: infinite; animation-direction: normal; animation-fill-mode: none; animation-play-state: running; animation-name: spin; animation-timeline: auto; animation-range-start: normal; animation-range-end: normal;"></div>
+<p class="loading-text" style="color: var(--text-secondary); font-size: 1rem; font-weight: 500;">Generating Randomization Results...</p>
+</div>
+</section>
+</div>
+</main>
+</div>
+
+<div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;">
+<div class="container" style="max-width: 1400px; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto; padding: 0px; display: flex; flex-wrap: wrap;"><div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;"></div></div>
+</div>
+<script>// FAA Compliance Dashboard JavaScript
+document.addEventListener("DOMContentLoaded", () => {
+  // Get DOM elements
+  const comboNumber = document.getElementById("combo-test-number")
+  const drugNumber = document.getElementById("drug-test-number")
+  const runButton = document.getElementById("run-randomizer")
+  const resultsContent = document.getElementById("results-content")
+  const loadingSpinner = document.getElementById("loading-spinner")
+  const quarterSelect = document.getElementById("quarter")
+  const yearSelect = document.getElementById("year")
+  const navTabs = document.querySelectorAll(".nav-tab")
+
+  // --- Initializations ---
+
+  // Animate KPI values on page load
+  const kpiValues = document.querySelectorAll(".kpi-value")
+  kpiValues.forEach((value) => {
+    const target = +value.dataset.target
+    const isFloat = target % 1 !== 0
+    const duration = 1500
+    const stepTime = 20
+    const steps = duration / stepTime
+    const increment = target / steps
+    let current = 0
+
+    const timer = setInterval(() => {
+      current += increment
+      if (current >= target) {
+        clearInterval(timer)
+        value.textContent = isFloat ? target.toFixed(1) : target.toLocaleString()
+      } else {
+        value.textContent = isFloat ? current.toFixed(1) : Math.floor(current).toLocaleString()
+      }
+    }, stepTime)
+  })
+
+  // --- Event Listeners ---
+
+  // Navigation functionality
+  navTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      navTabs.forEach((t) => t.classList.remove("active"))
+      tab.classList.add("active")
+      const page = tab.dataset.page
+      if (page !== "home") {
+        showNotification(`Navigating to ${tab.textContent.trim()}...`, "info")
+      }
+    })
+  })
+
+  // Input validation
+  function validateInputs(input) {
+    input.addEventListener("input", () => {
+      const value = Math.max(0, Math.min(100, Number.parseInt(input.value) || 0))
+      input.value = value
+    })
+  }
+  validateInputs(comboNumber)
+  validateInputs(drugNumber)
+
+  // Run Randomizer button functionality
+  runButton.addEventListener("click", () => {
+    const comboPercent = comboNumber.value
+    const drugPercent = drugNumber.value
+    if (Number.parseInt(comboPercent) + Number.parseInt(drugPercent) > 100) {
+      showNotification("Combined test percentages cannot exceed 100%", "error")
+      return
+    }
+    if (Number.parseInt(comboPercent) === 0 && Number.parseInt(drugPercent) === 0) {
+      showNotification("Please enter at least one test percentage.", "error")
+      return
+    }
+
+    resultsContent.classList.add("hidden")
+    loadingSpinner.classList.remove("hidden")
+    runButton.disabled = true
+
+    setTimeout(() => {
+      generateResults(comboPercent, drugPercent, quarterSelect.value, yearSelect.value)
+    }, 2000)
+  })
+
+  // --- Core Functions ---
+
+  function generateResults(comboPercent, drugPercent, quarter, year) {
+    const totalEmployees = 1247
+    const comboCount = Math.round((totalEmployees * comboPercent) / 100)
+    const drugCount = Math.round((totalEmployees * drugPercent) / 100)
+    const employees = generateMockEmployees(comboCount, drugCount)
+
+    const resultsHTML = `
+      <h2 class="section-title">Random Selection Results</h2>
+      <div class="card">
+        <div class="results-summary">
+          <div class="summary-grid">
+            <div class="summary-card">
+              <span class="summary-value">${comboCount}</span>
+              <span class="summary-label">Combo Tests</span>
+            </div>
+            <div class="summary-card">
+              <span class="summary-value">${drugCount}</span>
+              <span class="summary-label">Drug Tests</span>
+            </div>
+            <div class="summary-card">
+              <span class="summary-value">${employees.length}</span>
+              <span class="summary-label">Total Selected</span>
             </div>
           </div>
+          <div class="employee-table-container">
+            <div class="employee-table-wrapper" id="table-wrapper">
+              <table class="employee-table">
+                <thead>
+                  <tr>
+                    <th>Employee ID</th><th>Name</th><th>Department</th><th>Position</th><th>Test Type</th><th>Hire Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${employees
+                    .map(
+                      (emp) => `
+                    <tr>
+                      <td class="employee-id">${emp.id}</td>
+                      <td>${emp.firstName} ${emp.lastName}</td>
+                      <td>${emp.department}</td>
+                      <td>${emp.position}</td>
+                      <td><span class="test-type-badge test-type-${emp.testType.toLowerCase()}">${emp.testType === "Combo" ? "Drug & Alcohol" : emp.testType}</span></td>
+                      <td>${emp.hireDate}</td>
+                    </tr>`,
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="results-actions">
+            <button class="action-button save" onclick="saveResults()"><div class="icon-save"></div>Save Results</button>
+            <button class="action-button download" id="download-btn" onclick="downloadResults()" disabled><div class="icon-download"></div>Download Results</button>
+            <button class="action-button clear" onclick="clearResults()"><div class="icon-clear"></div>Clear Results</button>
+          </div>
         </div>
-        <!-- Loading Spinner (Hidden by default) -->
-        <div id="loading-spinner" class="loading-spinner hidden" style="flex-direction: column; align-items: center; justify-content: center; min-height: 300px; display: none;">
-          <div class="spinner" style="width: 48px; height: 48px; border-top-color: var(--atlas-gold); border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; animation-duration: 1s; animation-timing-function: linear; animation-delay: 0s; animation-iteration-count: infinite; animation-direction: normal; animation-fill-mode: none; animation-play-state: running; animation-name: spin; animation-timeline: auto; animation-range-start: normal; animation-range-end: normal;"></div>
-          <p class="loading-text" style="color: var(--text-secondary); font-size: 1rem; font-weight: 500;">Generating Randomization Results...</p>
-        </div>
-      </section>
-    </div>
-  </main>
-</div>
-<script src="web-files/Home.en-US.customs.js" defer></script>
-<div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;">
-  <div class="container" style="max-width: 1400px; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto; padding: 0px; display: flex; flex-wrap: wrap;"><div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;"></div></div>
-</div>
+      </div>`
+
+    loadingSpinner.classList.add("hidden")
+    resultsContent.innerHTML = resultsHTML
+    resultsContent.classList.remove("hidden")
+    runButton.disabled = false
+    window.resultsSaved = false
+  }
+
+  // --- Global Helper Functions ---
+
+  window.saveResults = () => {
+    const saveButton = document.querySelector(".action-button.save")
+    const downloadButton = document.getElementById("download-btn")
+    saveButton.disabled = true
+    saveButton.innerHTML =
+      '<div class="spinner" style="width:16px;height:16px;border-width:2px;border-top-color:var(--success-text);"></div> Saving...'
+    setTimeout(() => {
+      saveButton.innerHTML = '<div class="icon-save"></div>Results Saved'
+      downloadButton.disabled = false
+      window.resultsSaved = true
+      showNotification("Results saved successfully!", "success")
+    }, 1500)
+  }
+
+  window.downloadResults = () => {
+    if (!window.resultsSaved) {
+      showNotification("Please save results before downloading.", "error")
+      return
+    }
+    showNotification("Generating CSV file for download...", "info")
+    const csvContent = generateCSVContent()
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+    const link = document.createElement("a")
+    const url = URL.createObjectURL(blob)
+    link.setAttribute("href", url)
+    link.setAttribute("download", `FAA_Randomization_Results_${new Date().toISOString().split("T")[0]}.csv`)
+    link.style.visibility = "hidden"
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  window.clearResults = () => {
+    if (confirm("Are you sure you want to clear the current results? This action cannot be undone.")) {
+      resultsContent.innerHTML = `
+        <h2 class="section-title">Random Selection Results</h2>
+        <div class="card">
+            <div class="placeholder-content">
+                <div class="placeholder-icon"><div class="icon-clipboard"></div></div>
+                <h3 class="placeholder-title">Awaiting Configuration</h3>
+                <p class="placeholder-text">Configure and run the randomizer to generate employee selection results.</p>
+            </div>
+        </div>`
+      window.resultsSaved = false
+    }
+  }
+
+  function generateCSVContent() {
+    const table = document.querySelector(".employee-table")
+    const headers = Array.from(table.querySelectorAll("thead th"))
+      .map((th) => `"${th.textContent}"`)
+      .join(",")
+    const rows = Array.from(table.querySelectorAll("tbody tr")).map((row) =>
+      Array.from(row.querySelectorAll("td"))
+        .map((td) => `"${td.textContent}"`)
+        .join(","),
+    )
+    return [headers, ...rows].join("\n")
+  }
+
+  function showNotification(message, type = "info") {
+    const notification = document.createElement("div")
+    notification.className = `notification ${type}`
+    notification.textContent = message
+
+    const style = document.createElement("style")
+    style.textContent = `
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        z-index: 1001;
+        font-weight: 500;
+        border-left: 4px solid;
+        transform: translateX(calc(100% + 20px));
+        transition: transform 0.4s ease-in-out;
+      }
+      .notification.show { transform: translateX(0); }
+      .notification.info { background-color: var(--bg-subtle); color: var(--text-secondary); border-color: var(--atlas-gold); }
+      .notification.success { background-color: var(--success-bg); color: var(--success-text); border-color: var(--success-text); }
+      .notification.error { background-color: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-text); }
+    `
+    document.head.appendChild(style)
+    document.body.appendChild(notification)
+
+    setTimeout(() => notification.classList.add("show"), 100)
+    setTimeout(() => {
+      notification.classList.remove("show")
+      setTimeout(() => document.body.removeChild(notification), 400)
+    }, 4000)
+  }
+
+  function generateMockEmployees(comboCount, drugCount) {
+    const f = [
+      "John",
+      "Sarah",
+      "Michael",
+      "Jennifer",
+      "David",
+      "Lisa",
+      "Robert",
+      "Maria",
+      "James",
+      "Patricia",
+      "William",
+      "Linda",
+      "Richard",
+      "Barbara",
+      "Joseph",
+      "Susan",
+    ]
+    const l = [
+      "Smith",
+      "Johnson",
+      "Williams",
+      "Brown",
+      "Jones",
+      "Garcia",
+      "Miller",
+      "Davis",
+      "Rodriguez",
+      "Martinez",
+      "Hernandez",
+      "Lopez",
+      "Gonzalez",
+      "Wilson",
+      "Anderson",
+    ]
+    const d = ["Flight Ops", "Maintenance", "Ground Ops", "Cargo", "Admin", "Safety", "Training"]
+    const p = ["Pilot", "Mechanic", "Ground Crew", "Supervisor", "Manager", "Technician", "Coordinator"]
+    const e = []
+    let id = 1001
+    for (let i = 0; i < comboCount; i++) {
+      e.push({
+        id: `AA${id++}`,
+        firstName: f[Math.floor(Math.random() * f.length)],
+        lastName: l[Math.floor(Math.random() * l.length)],
+        department: d[Math.floor(Math.random() * d.length)],
+        position: p[Math.floor(Math.random() * p.length)],
+        testType: "Combo",
+        hireDate: new Date(
+          2018 + Math.floor(Math.random() * 6),
+          Math.floor(Math.random() * 12),
+          Math.floor(Math.random() * 28) + 1,
+        ).toLocaleDateString(),
+      })
+    }
+    for (let i = 0; i < drugCount; i++) {
+      e.push({
+        id: `AA${id++}`,
+        firstName: f[Math.floor(Math.random() * f.length)],
+        lastName: l[Math.floor(Math.random() * l.length)],
+        department: d[Math.floor(Math.random() * d.length)],
+        position: p[Math.floor(Math.random() * p.length)],
+        testType: "Drug",
+        hireDate: new Date(
+          2018 + Math.floor(Math.random() * 6),
+          Math.floor(Math.random() * 12),
+          Math.floor(Math.random() * 28) + 1,
+        ).toLocaleDateString(),
+      })
+    }
+    return e.sort(() => Math.random() - 0.5)
+  }
+})
+</script>
